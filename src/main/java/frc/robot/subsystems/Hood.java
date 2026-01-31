@@ -1,7 +1,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -23,35 +23,40 @@ import org.littletonrobotics.junction.Logger;
  *   but cannot detect when the mechanism is on-target).
  */
 public class Hood extends SubsystemBase {
-  private final Servo actuator;
+  private final PWMSparkMax actuator;
   private final boolean hasFeedback;
-  private final DoubleSupplier feedbackCentimeters; // may be null if no feedback
 
-  // Last commanded percent (0..1) used to estimate position when feedback is absent
+  // Last commanded value (-1..1) used to estimate position when feedback is absent
+  private double lastCommanded = 0.0;
 
   /**
    * Create an open-loop linear actuator controller on the given PWM channel.
    *
    * @param pwmChannel PWM channel for the actuator (port number)
-   * @param minCentimeters minimum extension (cm) corresponding to PWM=0.0
-   * @param maxCentimeters maximum extension (cm) corresponding to PWM=1.0
    */
+
   public Hood(int pwmChannel) {
-    this.actuator = new Servo(pwmChannel);
+    this.actuator = new PWMSparkMax(pwmChannel);
     this.hasFeedback = false;
-    this.feedbackCentimeters = null;
   }
 
   public void setPosition(double position) {
-    actuator.set(position);
+    // PWMSparkMax is a motor controller (range -1..1). We clamp the input here.
+    double v = MathUtil.clamp(position, -1.0, 1.0);
+    actuator.set(v);
+    lastCommanded = v;
   }
 
   public void setSpeed(double speed) {
-    actuator.set(speed);
+    double v = MathUtil.clamp(speed, -1.0, 1.0);
+    actuator.set(v);
+    lastCommanded = v;
   }
   
   public double getPositionCentimeters() {
-    return actuator.getPosition();
+    // PWMSparkMax doesn't provide position feedback. Return last commanded value as an
+    // estimate (units are motor output, not centimeters) to preserve callers.
+    return lastCommanded;
   }
 
   public Command setPositionCommand(double position) {
