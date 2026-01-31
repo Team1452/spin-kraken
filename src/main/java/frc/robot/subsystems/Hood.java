@@ -64,6 +64,14 @@ public class Hood extends SubsystemBase {
     this.maxCentimeters = maxCentimeters;
   }
 
+  public void setPosition(double position) {
+    actuator.set(position);
+  }
+
+  public void setSpeed(double speed) {
+    actuator.set(speed);
+  }
+
   /**
    * Set actuator by normalized percent (0.0..1.0). Clamped to [0,1].
    */
@@ -123,4 +131,13 @@ public class Hood extends SubsystemBase {
   public Command moveToPercentCommand(double percent) {
     return Commands.runOnce(() -> setPositionPercent(percent), this);
   }
+
+  public Command setPositionCommand(double position) {
+    return Commands.runOnce(() -> setPosition(position), this);
+  }
+
+  public Command setSpeedCommand(double speed) {  
+    return Commands.runOnce(() -> setSpeed(speed), this);
+  }
+  
 }
