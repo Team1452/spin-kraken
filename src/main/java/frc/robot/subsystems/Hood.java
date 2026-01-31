@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -25,6 +26,7 @@ import org.littletonrobotics.junction.Logger;
 public class Hood extends SubsystemBase {
   private final PWMSparkMax actuator;
   private final boolean hasFeedback;
+  private final Encoder encoder;
 
   // Last commanded value (-1..1) used to estimate position when feedback is absent
   private double lastCommanded = 0.0;
@@ -38,6 +40,9 @@ public class Hood extends SubsystemBase {
   public Hood(int pwmChannel) {
     this.actuator = new PWMSparkMax(pwmChannel);
     this.hasFeedback = false;
+    this.encoder = new Encoder(0, 1); 
+
+    this.encoder.setDistancePerPulse(0.1); // Example: 0.1 cm per pulse
   }
 
   public void setPosition(double position) {
