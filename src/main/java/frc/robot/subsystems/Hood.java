@@ -47,23 +47,6 @@ public class Hood extends SubsystemBase {
     this.maxCentimeters = maxCentimeters;
   }
 
-  /**
-   * Create a closed-loop-capable linear actuator controller using a feedback supplier.
-   *
-   * @param pwmChannel PWM channel for the actuator
-   * @param feedbackCentimetersSupplier supplier that returns the current position in centimeters
-   * @param minCentimeters minimum extension (cm) corresponding to PWM=0.0
-   * @param maxCentimeters maximum extension (cm) corresponding to PWM=1.0
-   */
-  public Hood(
-      int pwmChannel, DoubleSupplier feedbackCentimetersSupplier, double minCentimeters, double maxCentimeters) {
-    this.actuator = new Servo(pwmChannel);
-    this.hasFeedback = true;
-    this.feedbackCentimeters = feedbackCentimetersSupplier;
-    this.minCentimeters = minCentimeters;
-    this.maxCentimeters = maxCentimeters;
-  }
-
   public void setPosition(double position) {
     actuator.set(position);
   }
@@ -139,5 +122,10 @@ public class Hood extends SubsystemBase {
   public Command setSpeedCommand(double speed) {  
     return Commands.runOnce(() -> setSpeed(speed), this);
   }
-  
+
+@Override
+  public void periodic() {
+    System.out.println("Hood Position: " + getPositionCentimeters() + " cm");
+  }
+
 }
