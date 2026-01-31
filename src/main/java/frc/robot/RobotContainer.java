@@ -19,7 +19,7 @@ import frc.robot.subsystems.Shooter;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Shooter shooter = new Shooter();
-  private final Hood hood = new Hood(0, 0.0, 20.0);
+  private final Hood hood = new Hood(0);
   double targetRPM = 500.0;
   double targetUnitsPer100ms = (targetRPM * 2048.0) / 600.0;
   private final CommandXboxController controller = new CommandXboxController(0);
