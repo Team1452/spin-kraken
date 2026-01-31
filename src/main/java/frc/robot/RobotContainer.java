@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.subsystems.Hood;
 import frc.robot.subsystems.Shooter;
 
 /**
@@ -18,6 +19,7 @@ import frc.robot.subsystems.Shooter;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Shooter shooter = new Shooter();
+  private final Hood hood = new Hood(0, 0.0, 20.0);
   double targetRPM = 500.0;
   double targetUnitsPer100ms = (targetRPM * 2048.0) / 600.0;
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -40,7 +42,10 @@ public class RobotContainer {
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     controller.a().onTrue(shooter.simpleShoot());
-    controller.b().onTrue(shooter.controllerShoot(targetRPM));
+    //controller.b().onTrue(shooter.controllerShoot(targetRPM));
+
+    controller.y().onTrue(hood.moveToPercentCommand(0.0));
+    controller.x().onTrue(hood.moveToPercentCommand(1.0));
   }
 
   /**
