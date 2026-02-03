@@ -52,6 +52,10 @@ public class Hood extends SubsystemBase {
     lastCommanded = v;
   }
 
+  public void setPosition(DoubleSupplier position) {
+    actuator.set(position.getAsDouble());
+  }
+
   public void setSpeed(double speed) {
     double v = MathUtil.clamp(speed, -1.0, 1.0);
     actuator.set(v);
@@ -67,6 +71,10 @@ public class Hood extends SubsystemBase {
   public Command setPositionCommand(double position) {
     System.out.println("Setting hood position to: " + position);
     return Commands.runOnce(() -> setPosition(position), this);
+  }
+
+   public Command setPositionCommand(DoubleSupplier position) {
+    return Commands.run(() -> setPosition(position), this);
   }
 
   public Command setSpeedCommand(double speed) {  

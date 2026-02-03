@@ -44,8 +44,11 @@ public class RobotContainer {
     controller.a().onTrue(shooter.simpleShoot());
     //controller.b().onTrue(shooter.controllerShoot(targetRPM));
 
+    controller.b().toggleOnTrue(hood.setPositionCommand(controller.getLeftY()));
+
     controller.y().onTrue(hood.setPositionCommand(1));
     controller.x().onTrue(hood.setPositionCommand(0));
+
   }
 
   /**
