@@ -42,9 +42,9 @@ public class Shooter extends SubsystemBase{
     public void periodic() {
     }
 
-    public Command simpleShoot() {
+    public Command simpleShoot(double fracpower) {
         return Commands.sequence(
-            Commands.runOnce(() -> setShooter(0.1)), 
+            Commands.runOnce(() -> setShooter(fracpower)), 
             Commands.waitSeconds(2), 
             Commands.runOnce(() -> setShooter(0)));
     }

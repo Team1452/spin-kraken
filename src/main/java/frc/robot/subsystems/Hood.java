@@ -65,7 +65,7 @@ public class Hood extends SubsystemBase {
   public double getPositionCentimeters() {
     // PWMSparkMax doesn't provide position feedback. Return last commanded value as an
     // estimate (units are motor output, not centimeters) to preserve callers.
-    return lastCommanded;
+    return encoder.getDistance();
   }
 
   public Command setPositionCommand(double position) {
