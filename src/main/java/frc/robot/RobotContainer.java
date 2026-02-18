@@ -22,7 +22,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Shooter shooter = new Shooter();
   private final Hood hood = new Hood(0);
-  private final Climber climber = new Climber(31);
+  private final Climber climber = new Climber();
   double targetRPM = 500.0;
   double targetUnitsPer100ms = (targetRPM * 2048.0) / 600.0;
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -44,8 +44,9 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    controller.x().onTrue(climber.setSpeedCommand(0.1)).onFalse(climber.setSpeedCommand(0));
-
+    controller.b().onTrue(climber.zeroPositionCommand());
+    controller.y().onTrue(climber.extendCommand(0.2)).onFalse(climber.stopCommand());
+    controller.a().onTrue(climber.extendCommand(-0.2)).onFalse(climber.stopCommand());
   }
 
   /**
