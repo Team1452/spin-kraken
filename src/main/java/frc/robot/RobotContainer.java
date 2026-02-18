@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Hood;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Climber;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -20,6 +22,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Shooter shooter = new Shooter();
   private final Hood hood = new Hood(0);
+  private final Climber climber = new Climber(31);
   double targetRPM = 500.0;
   double targetUnitsPer100ms = (targetRPM * 2048.0) / 600.0;
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -41,13 +44,7 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    controller.a().onTrue(shooter.simpleShoot(0.5));
-    //controller.b().onTrue(shooter.controllerShoot(targetRPM));
-
-    controller.b().toggleOnTrue(hood.setPositionCommand(controller.getLeftY()));
-
-    controller.y().onTrue(hood.setPositionCommand(1));
-    controller.x().onTrue(hood.setPositionCommand(0));
+    controller.x().onTrue(climber.setSpeedCommand(0.1)).onFalse(climber.setSpeedCommand(0));
 
   }
 
